@@ -8,7 +8,7 @@ class PokemonRemoteDatasourceImpl implements PokemonRemoteDatasourceContract {
   PokemonRemoteDatasourceImpl({required this.dio});
 
   @override
-  Future<Map<String, dynamic>> getAllPokemons() async {
+  Future<Map<String, dynamic>> getResultPokemons() async {
     try {
       var resultFromApi = await dio.get(url_poke_api);
       if (resultFromApi.statusCode == 200) {
@@ -22,7 +22,7 @@ class PokemonRemoteDatasourceImpl implements PokemonRemoteDatasourceContract {
   }
 
   @override
-  Future getPokemon() {
+  Future<Map<String, dynamic>> getPokemon(String name) {
     // TODO: implement getPokemon
     throw UnimplementedError();
   }

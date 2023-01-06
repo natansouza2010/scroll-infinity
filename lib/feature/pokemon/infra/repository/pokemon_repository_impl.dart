@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:scrollinfinity/feature/pokemon/domain/errors/errors.dart';
 import 'package:scrollinfinity/feature/pokemon/domain/repository/pokemon_repository_contract.dart';
 import 'package:scrollinfinity/feature/pokemon/infra/datasource/pokemon_remote_datasource_contract.dart';
+import 'package:scrollinfinity/feature/pokemon/infra/model/pokemon_model.dart';
 import 'package:scrollinfinity/feature/pokemon/infra/model/result_pokemon_model.dart';
 
 class PokemonRepositoryImpl implements PokemonRepositoryContract {
@@ -13,15 +14,25 @@ class PokemonRepositoryImpl implements PokemonRepositoryContract {
   });
 
   @override
-  Future<Either<Failure, ResultPokemonModel>> getAllPokemons() async {
+  Future<Either<Failure, List<PokemonModel>>> getAllPokemons() async {
     try {
-      final pokemonsResult = await datasource.getAllPokemons();
+      final pokemonList = [];
+      final pokemonsResult = await datasource.getResultPokemons();
       final pokemonsFromResultModel =
           ResultPokemonModel.fromMap(pokemonsResult);
-      return Right(pokemonsFromResultModel);
+
+      if (pokemonsFromResultModel.results != null) {
+        final resultsPokemons =
+            Stream.fromIterable(pokemonsFromResultModel.results!);
+
+        final pokemon = await resultsPokemons.asyncMap((e) async {
+          PokemonModel.fromMap(await datasource.getPokemon(e.name));
+        }).toList();
+      }
+
+      // return Right(pokemonsFromResultModel);
     } catch (error) {
       return Left(Failure());
     }
-    // TODO: implement getAllPokemons
   }
 }
