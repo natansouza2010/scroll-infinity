@@ -2,39 +2,43 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:scrollinfinity/feature/pokemon/infra/model/pokemon_status_model.dart';
+
 class PokemonModel {
   final String name;
-  final List<String> status;
+  final List<PokemonStatusModel> stats;
 
   PokemonModel({
     required this.name,
-    required this.status,
+    required this.stats,
   });
 
   PokemonModel copyWith({
     String? name,
-    List<String>? status,
+    List<PokemonStatusModel>? stats,
   }) {
     return PokemonModel(
       name: name ?? this.name,
-      status: status ?? this.status,
+      stats: stats ?? this.stats,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
-      'status': status,
+      'stats': stats.map((x) => x.toMap()).toList(),
     };
   }
 
   factory PokemonModel.fromMap(Map<String, dynamic> map) {
     return PokemonModel(
-        name: map['name'] as String,
-        status: List<String>.from(
-          (map['status'] as List<String>),
-        ));
+      name: map['name'] as String,
+      stats: List<PokemonStatusModel>.from(
+        (map['stats'] as List<dynamic>).map<PokemonStatusModel>(
+          (x) => PokemonStatusModel.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -43,15 +47,15 @@ class PokemonModel {
       PokemonModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'PokemonModel(name: $name, status: $status)';
+  String toString() => 'PokemonModel(name: $name, stats: $stats)';
 
   @override
   bool operator ==(covariant PokemonModel other) {
     if (identical(this, other)) return true;
 
-    return other.name == name && listEquals(other.status, status);
+    return other.name == name && listEquals(other.stats, stats);
   }
 
   @override
-  int get hashCode => name.hashCode ^ status.hashCode;
+  int get hashCode => name.hashCode ^ stats.hashCode;
 }

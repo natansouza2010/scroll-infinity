@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:scrollinfinity/feature/pokemon/presenter/module/pokemon_module.dart';
+import 'package:scrollinfinity/feature/pokemon/presenter/pokemon_module.dart';
 
 class AppModule extends Module {
   @override

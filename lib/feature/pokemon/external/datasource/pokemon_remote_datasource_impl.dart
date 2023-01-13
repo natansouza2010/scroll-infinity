@@ -22,8 +22,16 @@ class PokemonRemoteDatasourceImpl implements PokemonRemoteDatasourceContract {
   }
 
   @override
-  Future<Map<String, dynamic>> getPokemon(String name) {
-    // TODO: implement getPokemon
-    throw UnimplementedError();
+  Future<Map<String, dynamic>> getPokemon(String name) async {
+    try {
+      var resultFromApi = await dio.get("$url_poke_api/$name");
+      if (resultFromApi.statusCode == 200) {
+        return resultFromApi.data;
+      } else {
+        throw Exception();
+      }
+    } catch (error) {
+      throw Exception();
+    }
   }
 }

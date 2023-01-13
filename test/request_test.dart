@@ -1,5 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:scrollinfinity/feature/pokemon/domain/usecase/get_all_pokemons.dart';
 import 'package:scrollinfinity/feature/pokemon/external/datasource/pokemon_remote_datasource_impl.dart';
 import 'package:scrollinfinity/feature/pokemon/infra/repository/pokemon_repository_impl.dart';
 
@@ -10,9 +10,13 @@ void main() async {
   PokemonRepositoryImpl repositoryImpl =
       PokemonRepositoryImpl(datasource: localDatasource);
 
+  GetAllPokemonsContract usecase =
+      GetAllPokemonsUseCase(repositoryPokemon: repositoryImpl);
+
   request() async {
-    final data = await repositoryImpl.getAllPokemons();
-    final teste = Right(data);
+    final data = usecase.call();
+    print("oi");
+    print(data);
   }
 
   await request();

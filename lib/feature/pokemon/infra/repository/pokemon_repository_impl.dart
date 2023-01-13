@@ -16,7 +16,7 @@ class PokemonRepositoryImpl implements PokemonRepositoryContract {
   @override
   Future<Either<Failure, List<PokemonModel>>> getAllPokemons() async {
     try {
-      final pokemonList = [];
+      final pokemonList = <PokemonModel>[];
       final pokemonsResult = await datasource.getResultPokemons();
       final pokemonsFromResultModel =
           ResultPokemonModel.fromMap(pokemonsResult);
@@ -25,10 +25,13 @@ class PokemonRepositoryImpl implements PokemonRepositoryContract {
         final resultsPokemons =
             Stream.fromIterable(pokemonsFromResultModel.results!);
 
-        final pokemon = await resultsPokemons.asyncMap((e) async {
-          PokemonModel.fromMap(await datasource.getPokemon(e.name));
-        }).toList();
+        await for (var e in resultsPokemons.asyncMap((e) async {
+          return PokemonModel.fromMap(await datasource.getPokemon(e.name));
+        })) {
+          pokemonList.add(e);
+        }
       }
+      return Right(pokemonList);
 
       // return Right(pokemonsFromResultModel);
     } catch (error) {
