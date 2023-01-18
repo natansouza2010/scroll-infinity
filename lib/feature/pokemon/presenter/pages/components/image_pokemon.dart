@@ -8,8 +8,8 @@ class ImagePokemon extends StatelessWidget {
     return Hero(
         tag: "Eita",
         child: Container(
-          height: 200.0,
-          width: 200.0,
+          height: 90.0,
+          width: 90.0,
           decoration: const BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scrollinfinity/feature/pokemon/presenter/pages/components/search_app_bar_pokemon.dart';
+import 'package:scrollinfinity/feature/pokemon/presenter/pages/components/app_bar_pokemon.dart';
+import 'package:scrollinfinity/feature/pokemon/presenter/pages/components/card_pokemon.dart';
 
 class PokemonsPage extends StatelessWidget {
   const PokemonsPage({super.key});
@@ -9,32 +10,20 @@ class PokemonsPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: _buildAppBar(theme),
-      body: Container(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          decoration: const BoxDecoration(
+              color: Colors.amberAccent,
+              borderRadius: BorderRadius.all(Radius.circular(12))),
+          child: Column(
+            children: const [
+              AppBarPokemon(),
+              CardPokemon(pokemon: null),
+            ],
+          ),
+        ),
+      ),
     );
   }
-}
-
-AppBar _buildAppBar(ThemeData theme) {
-  return AppBar(
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Icon(Icons.access_alarm, color: theme.iconTheme.color),
-            const SizedBox(
-              width: 10,
-            ),
-            Text("Pokedéx",
-                style: theme.textTheme.bodyText1!
-                    .copyWith(fontWeight: FontWeight.bold, fontSize: 24)),
-          ],
-        ),
-        Icon(Icons.arrow_drop_down, color: theme.iconTheme.color)
-      ],
-    ),
-    bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(20), child: SearchAppBarPokemon()),
-  );
 }

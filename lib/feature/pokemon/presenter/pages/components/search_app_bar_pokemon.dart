@@ -6,14 +6,23 @@ class SearchAppBarPokemon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 328,
+      height: 24,
       decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(2))),
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(22))),
       child: const TextField(
-          decoration: InputDecoration(
-        icon: Icon(Icons.search),
-        hintText: "Procurar",
-        border: InputBorder.none,
-      )),
+        textAlignVertical: TextAlignVertical.center,
+        decoration: InputDecoration(
+          icon: Padding(
+            padding: EdgeInsets.only(left: 10.0),
+            child: Icon(Icons.search),
+          ),
+          hintText: "Procurar",
+          alignLabelWithHint: true,
+          border: InputBorder.none,
+        ),
+      ),
     );
   }
 }
