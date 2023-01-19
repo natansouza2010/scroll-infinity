@@ -9,40 +9,35 @@ part of 'pokemon_page_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PokemonPageStore on _PokemonPageStore, Store {
-  late final _$valueAtom =
-      Atom(name: '_PokemonPageStore.value', context: context);
+  late final _$pokemonStateAtom =
+      Atom(name: '_PokemonPageStore.pokemonState', context: context);
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  PokemonState get pokemonState {
+    _$pokemonStateAtom.reportRead();
+    return super.pokemonState;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set pokemonState(PokemonState value) {
+    _$pokemonStateAtom.reportWrite(value, super.pokemonState, () {
+      super.pokemonState = value;
     });
   }
 
-  late final _$_PokemonPageStoreActionController =
-      ActionController(name: '_PokemonPageStore', context: context);
+  late final _$setPokemonStateAsyncAction =
+      AsyncAction('_PokemonPageStore.setPokemonState', context: context);
 
   @override
-  void increment() {
-    final _$actionInfo = _$_PokemonPageStoreActionController.startAction(
-        name: '_PokemonPageStore.increment');
-    try {
-      return super.increment();
-    } finally {
-      _$_PokemonPageStoreActionController.endAction(_$actionInfo);
-    }
+  Future<void> setPokemonState(PokemonState newState) {
+    return _$setPokemonStateAsyncAction
+        .run(() => super.setPokemonState(newState));
   }
 
   @override
   String toString() {
     return '''
-value: ${value}
+pokemonState: ${pokemonState}
     ''';
   }
 }
