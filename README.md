@@ -7,5 +7,5 @@ Pequeno Projeto com Scroll infinito utilizando Clean Arq
 - Flutter Modular
 - Dio
 - Dartz
-
+- Mobx
 
