@@ -10,43 +10,33 @@ class PokemonPageStore = _PokemonPageStore with _$PokemonPageStore;
 
 abstract class _PokemonPageStore with Store {
   final GetAllPokemonsContract getAllPokemonsContract;
-   CancelableOperation? cancellableOperation;
-
+  CancelableOperation? cancellableOperation;
 
   _PokemonPageStore({
     required this.getAllPokemonsContract,
-  }) {
-    reaction(pokemonState, )
-  }
+  });
 
   @observable
   PokemonState pokemonState = InitialPokemonState();
 
-
-
-   Future stateReaction(
-      CancelableOperation cancellableOperation) async {
-    await cancellableOperation.cancel();
+  Future stateReaction([CancelableOperation? cancellableOperation]) async {
+    await cancellableOperation?.cancel();
+    await setPokemonState(InitialPokemonState());
     cancellableOperation =
-        CancelableOperation<PokemonState>.fromFuture(makeSearch(text));
-    if (text.isEmpty) {
-      setState(StartState());
-      return;
-    }
+        CancelableOperation<PokemonState>.fromFuture(findAllPokemons());
 
-    setState(LoadingState());
-
-    setState(await cancellableOperation.valueOrCancellation(LoadingState()));
+    await setPokemonState(LoadingPokemonState());
+    await setPokemonState(
+        await cancellableOperation.valueOrCancellation(pokemonState));
   }
 
-   Future<PokemonState> findAllPokemons() async {
-    var result = getAllPokemonsContract;
-    return result.fold((l) => ErrorPokemonState(error: l), (r) => SucessPokemonState(pokemons: r));
+  Future<PokemonState> findAllPokemons() async {
+    var result = await getAllPokemonsContract.call();
+    return result.fold((l) => ErrorPokemonState(error: l),
+        (r) => SucessPokemonState(pokemons: r));
   }
-
 
   @action
   Future<void> setPokemonState(PokemonState newState) async =>
       pokemonState = newState;
-  
 }

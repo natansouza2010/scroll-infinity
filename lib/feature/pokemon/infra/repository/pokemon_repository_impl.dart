@@ -32,8 +32,6 @@ class PokemonRepositoryImpl implements PokemonRepositoryContract {
         }
       }
       return Right(pokemonList);
-
-      // return Right(pokemonsFromResultModel);
     } catch (error) {
       return Left(Failure());
     }
