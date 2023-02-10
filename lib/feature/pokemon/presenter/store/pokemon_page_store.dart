@@ -16,27 +16,42 @@ abstract class _PokemonPageStore with Store {
     required this.getAllPokemonsContract,
   });
 
+  final int limit = 20;
+
+  int offset = 1240;
+
   @observable
   PokemonState pokemonState = InitialPokemonState();
 
+  bool isFirstRequest = true;
+
   Future stateReaction([CancelableOperation? cancellableOperation]) async {
     await cancellableOperation?.cancel();
-    await setPokemonState(InitialPokemonState());
-    cancellableOperation =
-        CancelableOperation<PokemonState>.fromFuture(findAllPokemons());
+    if (isFirstRequest) {
+      await setPokemonState(InitialPokemonState());
+    }
 
-    await setPokemonState(LoadingPokemonState());
+    cancellableOperation =
+        CancelableOperation<PokemonState>.fromFuture(findAllPokemons(offset));
+
+    await setPokemonState(LoadingPokemonState(pokemons: pokemonState.pokemons));
     await setPokemonState(
         await cancellableOperation.valueOrCancellation(pokemonState));
   }
 
-  Future<PokemonState> findAllPokemons() async {
-    var result = await getAllPokemonsContract.call();
-    return result.fold((l) => ErrorPokemonState(error: l),
-        (r) => SucessPokemonState(pokemons: r));
+  Future<PokemonState> findAllPokemons(int offset) async {
+    var result =
+        await getAllPokemonsContract.call(limit: limit, offset: offset);
+    return result.fold((l) => ErrorPokemonState(error: l, pokemons: []), (r) {
+      setOffset(offset + r.length);
+      isFirstRequest = false;
+      return SucessPokemonState(pokemons: [...pokemonState.pokemons, ...r]);
+    });
   }
 
   @action
   Future<void> setPokemonState(PokemonState newState) async =>
       pokemonState = newState;
+
+  void setOffset(int newOffset) async => offset = newOffset;
 }

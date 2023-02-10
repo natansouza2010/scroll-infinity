@@ -6,14 +6,20 @@ import 'package:scrollinfinity/feature/pokemon/presenter/pages/components/card_p
 
 class ListPokemon extends StatelessWidget {
   final List<PokemonModel> pokemonsList;
+  final ScrollController scrollController;
   const ListPokemon({
     Key? key,
     required this.pokemonsList,
+    required this.scrollController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics:
+          const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+      controller: scrollController,
+      itemCount: pokemonsList.length,
       itemBuilder: (context, index) {
         final pokemon = pokemonsList[index];
         return CardPokemon(pokemon: pokemon);

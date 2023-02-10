@@ -8,9 +8,9 @@ class PokemonRemoteDatasourceImpl implements PokemonRemoteDatasourceContract {
   PokemonRemoteDatasourceImpl({required this.dio});
 
   @override
-  Future<Map<String, dynamic>> getResultPokemons() async {
+  Future<Map<String, dynamic>> getPokemon(String name) async {
     try {
-      var resultFromApi = await dio.get(url_poke_api);
+      var resultFromApi = await dio.get("$url_poke_api/$name");
       if (resultFromApi.statusCode == 200) {
         return resultFromApi.data;
       } else {
@@ -20,11 +20,14 @@ class PokemonRemoteDatasourceImpl implements PokemonRemoteDatasourceContract {
       throw Exception();
     }
   }
+  // limit=60&offset=60.
 
   @override
-  Future<Map<String, dynamic>> getPokemon(String name) async {
+  Future<Map<String, dynamic>> getResultPokemons(
+      {required int offset, required int limit}) async {
     try {
-      var resultFromApi = await dio.get("$url_poke_api/$name");
+      var resultFromApi =
+          await dio.get("$url_poke_api/?offset=$offset&limit=$limit");
       if (resultFromApi.statusCode == 200) {
         return resultFromApi.data;
       } else {

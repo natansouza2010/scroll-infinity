@@ -2,24 +2,27 @@
 import 'package:scrollinfinity/feature/pokemon/domain/errors/errors.dart';
 import 'package:scrollinfinity/feature/pokemon/infra/model/pokemon_model.dart';
 
-abstract class PokemonState {}
-
-class SucessPokemonState implements PokemonState {
-  List<PokemonModel> pokemons;
-  SucessPokemonState({
+abstract class PokemonState {
+  final List<PokemonModel> pokemons;
+  PokemonState({
     required this.pokemons,
   });
+}
+
+class SucessPokemonState extends PokemonState {
+  SucessPokemonState({required super.pokemons});
 }
 
 class InitialPokemonState extends SucessPokemonState {
   InitialPokemonState() : super(pokemons: []);
 }
 
-class LoadingPokemonState implements PokemonState {
-  LoadingPokemonState();
+class LoadingPokemonState extends PokemonState {
+  LoadingPokemonState({super.pokemons = const []});
 }
 
-class ErrorPokemonState implements PokemonState {
+class ErrorPokemonState extends PokemonState {
   final Failure error;
-  ErrorPokemonState({required this.error});
+
+  ErrorPokemonState({required super.pokemons, required this.error});
 }

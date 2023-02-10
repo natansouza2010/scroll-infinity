@@ -6,7 +6,8 @@ import 'package:scrollinfinity/feature/pokemon/domain/repository/pokemon_reposit
 import 'package:scrollinfinity/feature/pokemon/infra/model/pokemon_model.dart';
 
 abstract class GetAllPokemonsContract {
-  Future<Either<Failure, List<PokemonModel>>> call();
+  Future<Either<Failure, List<PokemonModel>>> call(
+      {required int offset, required int limit});
 }
 
 class GetAllPokemonsUseCase implements GetAllPokemonsContract {
@@ -17,8 +18,10 @@ class GetAllPokemonsUseCase implements GetAllPokemonsContract {
   });
 
   @override
-  Future<Either<Failure, List<PokemonModel>>> call() async {
-    final pokemons = await repositoryPokemon.getAllPokemons();
+  Future<Either<Failure, List<PokemonModel>>> call(
+      {required int offset, required int limit}) async {
+    final pokemons =
+        await repositoryPokemon.getAllPokemons(limit: limit, offset: offset);
     return pokemons.fold((l) => throw Failure(), (r) => right(r));
   }
 }

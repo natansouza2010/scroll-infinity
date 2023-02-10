@@ -14,9 +14,9 @@ void main() async {
       GetAllPokemonsUseCase(repositoryPokemon: repositoryImpl);
 
   request() async {
-    final data = usecase.call();
-    print("oi");
-    print(data);
+    // final data = usecase.call();
+    // print("oi");
+    // print(data);
   }
 
   await request();

@@ -8,6 +8,14 @@ class CardPokemon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var namePokemon = "";
+    var idPokemon = "";
+    if (pokemon?.name != null) {
+      namePokemon = pokemon!.name[0].toUpperCase() + pokemon!.name.substring(1);
+    }
+    if (pokemon?.id != null) {
+      idPokemon = pokemon!.id.toString().padLeft(3, '0');
+    }
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -25,10 +33,10 @@ class CardPokemon extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
+                  children: [
                     Text(
-                      "#001",
-                      style: TextStyle(color: Colors.blueAccent),
+                      "#$idPokemon",
+                      style: const TextStyle(color: Colors.blueAccent),
                     )
                   ],
                 ),
@@ -45,10 +53,10 @@ class CardPokemon extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
-                  "Bulbasar",
-                  style: TextStyle(color: Colors.white),
+                  namePokemon,
+                  style: const TextStyle(color: Colors.white),
                 )
               ],
             ),

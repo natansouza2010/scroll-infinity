@@ -14,10 +14,12 @@ class PokemonRepositoryImpl implements PokemonRepositoryContract {
   });
 
   @override
-  Future<Either<Failure, List<PokemonModel>>> getAllPokemons() async {
+  Future<Either<Failure, List<PokemonModel>>> getAllPokemons(
+      {required int offset, required int limit}) async {
     try {
       final pokemonList = <PokemonModel>[];
-      final pokemonsResult = await datasource.getResultPokemons();
+      final pokemonsResult =
+          await datasource.getResultPokemons(limit: limit, offset: offset);
       final pokemonsFromResultModel =
           ResultPokemonModel.fromMap(pokemonsResult);
 
