@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:scrollinfinity/feature/pokemon/infra/model/pokemon_model.dart';
 
 class ImagePokemon extends StatelessWidget {
-  const ImagePokemon({super.key});
+  final PokemonModel? pokemon;
+  const ImagePokemon({super.key, this.pokemon});
 
   @override
   Widget build(BuildContext context) {
     return Hero(
         tag: "Eita",
-        child: Container(
-          height: 90.0,
-          width: 90.0,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage('https://picsum.photos/250?image=9'))),
+        child: Center(
+          child: Image.network(pokemon?.image ?? "", width: 520),
         ));
   }
 }

@@ -8,22 +8,26 @@ import 'package:scrollinfinity/feature/pokemon/infra/model/pokemon_status_model.
 class PokemonModel {
   final String name;
   final int id;
+  final String? image;
   final List<PokemonStatusModel> stats;
 
   PokemonModel({
     required this.name,
     required this.id,
+    this.image,
     required this.stats,
   });
 
   PokemonModel copyWith({
     String? name,
     int? id,
+    String? image,
     List<PokemonStatusModel>? stats,
   }) {
     return PokemonModel(
       name: name ?? this.name,
       id: id ?? this.id,
+      image: image ?? this.image,
       stats: stats ?? this.stats,
     );
   }
@@ -32,6 +36,7 @@ class PokemonModel {
     return <String, dynamic>{
       'name': name,
       'id': id,
+      'image': image,
       'stats': stats.map((x) => x.toMap()).toList(),
     };
   }
@@ -40,6 +45,11 @@ class PokemonModel {
     return PokemonModel(
       name: map['name'] as String,
       id: map['id'] as int,
+      image:
+          map['sprites']['other']['official-artwork']['front_default'] != null
+              ? map['sprites']['other']['official-artwork']['front_default']
+                  as String
+              : null,
       stats: List<PokemonStatusModel>.from(
         (map['stats'] as List<dynamic>).map<PokemonStatusModel>(
           (x) => PokemonStatusModel.fromMap(x as Map<String, dynamic>),
@@ -54,7 +64,9 @@ class PokemonModel {
       PokemonModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'PokemonModel(name: $name, id: $id, stats: $stats)';
+  String toString() {
+    return 'PokemonModel(name: $name, id: $id, image: $image, stats: $stats)';
+  }
 
   @override
   bool operator ==(covariant PokemonModel other) {
@@ -62,9 +74,12 @@ class PokemonModel {
 
     return other.name == name &&
         other.id == id &&
+        other.image == image &&
         listEquals(other.stats, stats);
   }
 
   @override
-  int get hashCode => name.hashCode ^ id.hashCode ^ stats.hashCode;
+  int get hashCode {
+    return name.hashCode ^ id.hashCode ^ image.hashCode ^ stats.hashCode;
+  }
 }

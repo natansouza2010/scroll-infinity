@@ -43,7 +43,9 @@ class CardPokemon extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                const ImagePokemon()
+                ImagePokemon(
+                  pokemon: pokemon,
+                )
               ],
             ),
           ),

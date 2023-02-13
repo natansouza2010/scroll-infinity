@@ -18,7 +18,7 @@ abstract class _PokemonPageStore with Store {
 
   final int limit = 20;
 
-  int offset = 1240;
+  int offset = 0;
 
   @observable
   PokemonState pokemonState = InitialPokemonState();
